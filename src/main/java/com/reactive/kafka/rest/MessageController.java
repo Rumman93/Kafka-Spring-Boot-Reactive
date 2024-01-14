@@ -1,5 +1,7 @@
 package com.reactive.kafka.rest;
 
+import com.reactive.kafka.payload.Student;
+import com.reactive.kafka.producer.KafkaJsonProducer;
 import com.reactive.kafka.producer.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +21,23 @@ public class MessageController {
 
     private final KafkaProducer kafkaProducer;
 
+    private final KafkaJsonProducer kafkaJsonProducer;
+
     @PostMapping
     public ResponseEntity<String> sendMessage(@RequestBody String message) {
 
         kafkaProducer.sendMessage(message);
 
         return ResponseEntity.ok("Message Queued Successfully ");
+
+    }
+
+    @PostMapping("/json")
+    public ResponseEntity<String> sendJsonMessage(@RequestBody Student student) {
+
+        kafkaJsonProducer.sendMessage(student);
+
+        return ResponseEntity.ok("Json Payload Message Queued Successfully ");
 
     }
 }
